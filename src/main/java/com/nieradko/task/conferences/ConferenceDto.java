@@ -22,5 +22,5 @@ public class ConferenceDto {
     private String startDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private String endDate;
-    private List<LectureEntity> lectureEntities;
+    private List<LectureEntity> allLectures;
 }

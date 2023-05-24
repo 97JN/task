@@ -19,7 +19,7 @@ public class ConferenceController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    ResponseEntity<List<ConferenceDto>> getAllConferences(){
+    ResponseEntity<List<ConferenceDto>> getConferences(){
         List<ConferenceEntity> conferenceList = conferenceService.getAllConferences();
         List<ConferenceDto> conferenceDtos = conferenceList.stream()
                 .map(conferenceEntity -> modelMapper.map(conferenceEntity,ConferenceDto.class))

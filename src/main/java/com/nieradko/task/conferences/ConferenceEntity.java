@@ -26,8 +26,7 @@ public class ConferenceEntity {
     private String startDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private String endDate;
-    @OneToMany(mappedBy = "conferenceEntity")
-    @JsonIgnore
-    private List<LectureEntity> lectureEntities;
+    @OneToMany(mappedBy = "conferences")
+    private List<LectureEntity> allLectures;
 
 }

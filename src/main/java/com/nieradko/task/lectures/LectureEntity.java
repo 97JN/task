@@ -2,8 +2,11 @@ package com.nieradko.task.lectures;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nieradko.task.conferences.ConferenceEntity;
+import com.nieradko.task.reservation.ReservationEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 
 @Getter
@@ -16,9 +19,12 @@ public class LectureEntity {
     private Long id;
     private String lectureName;
     private Integer personLimit;
+    private Integer personEntriesLeft;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conference_id", nullable = false)
     @JsonIgnore
-    private ConferenceEntity conferenceEntity;
+    private ConferenceEntity conferences;
+    @OneToMany(mappedBy = "reservation_id")
+    private List<ReservationEntity> reserveLecture;
 
 }
