@@ -23,29 +23,29 @@ public class ReservationService {
 
     public boolean isLectureFullyBooked(Long lectureId) {
         LectureEntity lecture = lectureRepository.findById(lectureId).orElse(null);
-        return lecture != null && lecture.getPersonEntriesLeft() <= 5;
+        return lecture != null && lecture.getPersonEntriesLeft() <= 0;
     }
 
     @Transactional
-    public ResponseEntity<String> reserveLecture(Long lectureId, String username, String email) {
+    public ResponseEntity<String> reserveLecture(Long lectureId, ReservationRequest request) {
         LectureEntity lecture = lectureRepository.findById(lectureId).orElse(null);
         if (lecture == null) {
             return new ResponseEntity<>("Lecture not found", HttpStatus.NOT_FOUND);
         }
 
-        if (lecture.getPersonEntriesLeft() <= 5) {
+        if (lecture.getPersonEntriesLeft() <= 0) {
             return new ResponseEntity<>("Lecture is fully booked", HttpStatus.CONFLICT);
         }
 
         ReservationEntity reservation = new ReservationEntity();
-        reservation.setUsername(username);
-        reservation.setEmail(email);
+        reservation.setUsername(request.getUsername());
+        reservation.setEmail(request.getEmail());
         reservation.setLecture(lecture);
 
         lecture.setPersonEntriesLeft(lecture.getPersonEntriesLeft() - 1);
 
-        reservationRepository.save(reservation);
-        lectureRepository.save(lecture);
-        return null;
+        return new ResponseEntity<>("You have successfully signet to this lecture", HttpStatus.OK);
+
     }
+
 }

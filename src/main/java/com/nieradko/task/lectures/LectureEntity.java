@@ -24,7 +24,10 @@ public class LectureEntity {
     @JoinColumn(name = "conference_id", nullable = false)
     @JsonIgnore
     private ConferenceEntity conferences;
-    @OneToMany(mappedBy = "reservation_id")
+    @OneToMany(mappedBy = "lecture")
+    @JsonIgnore
     private List<ReservationEntity> reserveLecture;
+
+
 
 }

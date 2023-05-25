@@ -19,16 +19,13 @@ public class ReservationController {
 
     @PostMapping("/{lectureId}")
     public ResponseEntity<String> reserveLecture(@PathVariable Long lectureId, @RequestBody ReservationRequest request) {
-        if (reservationService.isUsernameTaken(request.getUsername()) && !reservationService.isEmailTaken(request.getEmail())) {
-            return new ResponseEntity<>("Username is already taken",HttpStatus.OK);
+        if(reservationService.isUsernameTaken(request.getUsername())){
+            return new  ResponseEntity<>("Username is already taken",HttpStatus.BAD_REQUEST);
         }
-
-        if (reservationService.isLectureFullyBooked(lectureId)) {
-            return new  ResponseEntity<>("Lecture is fully booked",HttpStatus.BAD_REQUEST);
-        }
-
-        reservationService.reserveLecture(lectureId, request.getUsername(), request.getEmail());
-        return new ResponseEntity<>("You have successfully signed to this lecture", HttpStatus.OK);
+       if(reservationService.isLectureFullyBooked(lectureId)){
+           return new  ResponseEntity<>("Lecture is fully booked",HttpStatus.BAD_REQUEST);
+       }
+       return reservationService.reserveLecture(lectureId,request);
     }
 }
 
