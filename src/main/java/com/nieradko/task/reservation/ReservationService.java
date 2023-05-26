@@ -6,9 +6,12 @@ import com.nieradko.task.lectures.LectureEntity;
 import com.nieradko.task.lectures.LectureRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -16,6 +19,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final LectureRepository lectureRepository;
     private final ConferenceRepository conferenceRepository;
+    private final ModelMapper modelMapper;
 
     @Transactional
     public ResponseEntity<String> reserveLecture(Long conferenceId, Long lectureId, ReservationRequest request) {
@@ -31,7 +35,7 @@ public class ReservationService {
             return new ResponseEntity<>("There is no conference with given ID", HttpStatus.NOT_FOUND);
         }
 
-        if (lecture == null) {
+        if (lecture == null || !lecture.getConferences().equals(conference)){
             return new ResponseEntity<>("There is no lecture with given ID", HttpStatus.NOT_FOUND);
         }
         if (lecture.getPersonEntriesLeft() <= 0) {
@@ -59,4 +63,7 @@ public class ReservationService {
 
         return new ResponseEntity<>("You have successfully signed up for this lecture", HttpStatus.OK);
     }
+
+
+
 }

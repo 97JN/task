@@ -9,8 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ReservationRequest {
-    @Column(unique = true)
     private String username;
-    @Column(unique = true)
     private String email;
 }

@@ -1,13 +1,9 @@
 package com.nieradko.task.reservation;
 
-import com.nieradko.task.lectures.LectureEntity;
 import com.nieradko.task.lectures.LectureRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.NoSuchElementException;
 
 @RestController
 @AllArgsConstructor
