@@ -3,6 +3,7 @@ package com.nieradko.task.conferences;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nieradko.task.lectures.LectureEntity;
+import com.nieradko.task.reservation.ReservationEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,5 +29,6 @@ public class ConferenceEntity {
     private String endDate;
     @OneToMany(mappedBy = "conferences")
     private List<LectureEntity> allLectures;
-
+    @OneToMany(mappedBy = "conference")
+    private List<ReservationEntity> allReservations;
 }

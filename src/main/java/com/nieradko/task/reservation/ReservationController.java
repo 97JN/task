@@ -17,15 +17,13 @@ public class ReservationController {
     private final ReservationRepository reservationRepository;
     private final ReservationService reservationService;
 
-    @PostMapping("/{lectureId}")
-    public ResponseEntity<String> reserveLecture(@PathVariable Long lectureId, @RequestBody ReservationRequest request) {
-        if(reservationService.isUsernameTaken(request.getUsername())){
-            return new  ResponseEntity<>("Username is already taken",HttpStatus.BAD_REQUEST);
-        }
-       if(reservationService.isLectureFullyBooked(lectureId)){
-           return new  ResponseEntity<>("Lecture is fully booked",HttpStatus.BAD_REQUEST);
-       }
-       return reservationService.reserveLecture(lectureId,request);
+    @PostMapping("/{conferenceId}/set/{lectureId}")
+    public ResponseEntity<String> reserveLecture(
+            @PathVariable Long conferenceId,
+            @PathVariable Long lectureId,
+            @RequestBody ReservationRequest request) {
+       return reservationService.reserveLecture(conferenceId,lectureId,request);
     }
+
 }
 

@@ -1,5 +1,6 @@
 package com.nieradko.task.reservation;
 
+import com.nieradko.task.conferences.ConferenceEntity;
 import com.nieradko.task.lectures.LectureEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,12 +14,12 @@ public class ReservationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String username;
-    @Column(unique = true)
     private String email;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_id", nullable = true)
     private LectureEntity lecture;
-
+    @ManyToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "conference_id", nullable = true)
+    private ConferenceEntity conference;
 }
