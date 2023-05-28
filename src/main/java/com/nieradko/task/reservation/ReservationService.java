@@ -81,33 +81,35 @@ public class ReservationService {
         return lectures;
     }
 
-    public ResponseEntity<String> canselUserReservation(String username, Long reservationId){
-        Optional<ReservationEntity> reservation = reservationRepository.findById(reservationId);
+    public ResponseEntity<String> canselUserReservation(String username, Long reservationId) {
 
+        Optional<ReservationEntity> reservation = reservationRepository.findById(reservationId);
         Long lectureId = reservation.map(ReservationEntity::getLecture)
                 .map(LectureEntity::getId).orElse(null);
 
-        LectureEntity lecture = lectureRepository.findById(lectureId).get();
-
+        LectureEntity lecture = null;
+        if (lectureId != null) {
+            lecture = lectureRepository.findById(lectureId).orElse(null);
+        }
 
         if (reservation.isPresent()) {
             ReservationEntity reservations = reservation.get();
-
-            if (reservations.getUsername().equals(username)) {
+            if (reservations.getUsername() != null && reservations.getUsername().equals(username)) {
                 reservationRepository.delete(reservations);
-                lecture.setPersonEntriesLeft(lecture.getPersonEntriesLeft() + 1);
-                ReservationEntity cancelReservation = new ReservationEntity();
-                cancelReservation.setLecture(lecture);
-                reservationRepository.save(cancelReservation);
-                return new ResponseEntity<>("Reservation has been canceled",HttpStatus.OK);
-
-            } else {
-                return new ResponseEntity<>("User is not assigned to the specified reservation",HttpStatus.CONFLICT);
+                if (lecture != null) {
+                    lecture.setPersonEntriesLeft(lecture.getPersonEntriesLeft() + 1);
+                    ReservationEntity cancelReservation = new ReservationEntity();
+                    cancelReservation.setLecture(lecture);
+                    reservationRepository.save(cancelReservation);
+                }
+                return new ResponseEntity<>("Reservation has been canceled", HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>("User is not assigned to the specified reservation", HttpStatus.CONFLICT);
             }
         } else {
-            return new ResponseEntity<>("There is no reservation with given ID",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("There is no reservation with the given ID", HttpStatus.NOT_FOUND);
         }
-
     }
 }
 

@@ -15,8 +15,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
 
     boolean existsByConference(ConferenceEntity conference);
 
-
     List<ReservationEntity> findByUsername(String username);
 
-
+    ReservationEntity findByUsernameAndEmail(String username, String email);
 }
