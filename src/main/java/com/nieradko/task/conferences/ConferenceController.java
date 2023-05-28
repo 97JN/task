@@ -21,11 +21,11 @@ public class ConferenceController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public List<ConferenceDto> getConferences(){
+    public ResponseEntity<List<ConferenceDto>> getConferences(){
         return conferenceService.getAllConferences();
     }
     @GetMapping("/allUsers")
-    public List<ReservationDto> getAllRegisteredUsers() {
+    public ResponseEntity<List<ReservationDto>> getAllRegisteredUsers() {
         return conferenceService.getAllRegisteredUsers();
     }
 

@@ -1,9 +1,14 @@
 package com.nieradko.task.reservation;
 
+import com.nieradko.task.lectures.LectureDto;
+import com.nieradko.task.lectures.LectureEntity;
 import com.nieradko.task.lectures.LectureRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -18,8 +23,20 @@ public class ReservationController {
             @PathVariable Long conferenceId,
             @PathVariable Long lectureId,
             @RequestBody ReservationRequest request) {
-       return reservationService.reserveLecture(conferenceId,lectureId,request);
+        return reservationService.reserveLecture(conferenceId, lectureId, request);
     }
+
+    @GetMapping("/{username}/lectures")
+    public ResponseEntity<List<LectureEntity>> getLecturesForUsers(@PathVariable String username) {
+        List<LectureEntity> lectures = reservationService.getLecturesForUsers(username);
+        return new ResponseEntity<>(lectures, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/cancel/{username}/reservation/{reservationId}")
+    public ResponseEntity<String> canselUserReservation(@PathVariable String username, @PathVariable Long reservationId){
+        return reservationService.canselUserReservation(username,reservationId);
+    }
+
 
 }
 

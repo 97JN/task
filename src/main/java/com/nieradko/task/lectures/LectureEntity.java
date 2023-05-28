@@ -1,6 +1,7 @@
 package com.nieradko.task.lectures;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nieradko.task.conferences.ConferenceEntity;
 import com.nieradko.task.reservation.ReservationEntity;
 import jakarta.persistence.*;
@@ -13,6 +14,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "lecture")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class LectureEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

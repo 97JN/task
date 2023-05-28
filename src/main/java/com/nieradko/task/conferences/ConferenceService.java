@@ -20,25 +20,25 @@ public class ConferenceService {
     private final ModelMapper modelMapper;
 
 
-    public List<ConferenceDto> getAllConferences() {
-        var conferenceList= conferenceRepository.findAll();
+    public ResponseEntity<List<ConferenceDto>> getAllConferences() {
+        var conferenceList = conferenceRepository.findAll();
         List<ConferenceDto> conferences = conferenceList.stream()
-                .map(conferenceEntity -> modelMapper.map(conferenceEntity,ConferenceDto.class))
+                .map(conferenceEntity -> modelMapper.map(conferenceEntity, ConferenceDto.class))
                 .toList();
-        return new ResponseEntity<>(conferences, HttpStatus.OK).getBody();
+        return new ResponseEntity<>(conferences, HttpStatus.OK);
     }
 
-    public List<ReservationDto> getAllRegisteredUsers() {
+    public ResponseEntity<List<ReservationDto>> getAllRegisteredUsers() {
         var reservations = reservationRepository.findAll();
 
-        return reservations.stream().distinct()
+        List<ReservationDto> reservationDtos = reservations.stream()
                 .map(reservation -> {
                     ReservationDto reservationDto = new ReservationDto();
                     reservationDto.setId(reservation.getId());
                     reservationDto.setUsername(reservation.getUsername());
                     reservationDto.setEmail(reservation.getEmail());
                     return reservationDto;
-                })
-                .toList();
+                }).toList();
+        return new ResponseEntity<>(reservationDtos, HttpStatus.OK);
     }
 }

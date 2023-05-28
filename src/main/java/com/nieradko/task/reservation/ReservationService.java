@@ -11,7 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -35,7 +38,7 @@ public class ReservationService {
             return new ResponseEntity<>("There is no conference with given ID", HttpStatus.NOT_FOUND);
         }
 
-        if (lecture == null || !lecture.getConferences().equals(conference)){
+        if (lecture == null || !lecture.getConferences().equals(conference)) {
             return new ResponseEntity<>("There is no lecture with given ID", HttpStatus.NOT_FOUND);
         }
         if (lecture.getPersonEntriesLeft() <= 0) {
@@ -64,6 +67,49 @@ public class ReservationService {
         return new ResponseEntity<>("You have successfully signed up for this lecture", HttpStatus.OK);
     }
 
+    public List<LectureEntity> getLecturesForUsers(String username) {
+        List<ReservationEntity> reservations = reservationRepository.findByUsername(username);
+        List<LectureEntity> lectures = new ArrayList<>();
+
+        for (ReservationEntity reservation : reservations) {
+            LectureEntity lecture = reservation.getLecture();
+            if (lecture != null) {
+                lectures.add(lecture);
+            }
+        }
+
+        return lectures;
+    }
+
+    public ResponseEntity<String> canselUserReservation(String username, Long reservationId){
+        Optional<ReservationEntity> reservation = reservationRepository.findById(reservationId);
+
+        Long lectureId = reservation.map(ReservationEntity::getLecture)
+                .map(LectureEntity::getId).orElse(null);
+
+        LectureEntity lecture = lectureRepository.findById(lectureId).get();
 
 
+        if (reservation.isPresent()) {
+            ReservationEntity reservations = reservation.get();
+
+            if (reservations.getUsername().equals(username)) {
+                reservationRepository.delete(reservations);
+                lecture.setPersonEntriesLeft(lecture.getPersonEntriesLeft() + 1);
+                ReservationEntity cancelReservation = new ReservationEntity();
+                cancelReservation.setLecture(lecture);
+                reservationRepository.save(cancelReservation);
+                return new ResponseEntity<>("Reservation has been canceled",HttpStatus.OK);
+
+            } else {
+                return new ResponseEntity<>("User is not assigned to the specified reservation",HttpStatus.CONFLICT);
+            }
+        } else {
+            return new ResponseEntity<>("There is no reservation with given ID",HttpStatus.NOT_FOUND);
+        }
+
+    }
 }
+
+
+
