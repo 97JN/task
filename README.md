@@ -20,30 +20,40 @@ we want so sign for conference 1 and conference 2, after time we want to get sig
 
 
 here's enpoints with example request:<br><br>
-
+///////////////////////////////////////////////////////////////////<br>
 @Get<br>
 get conference plan<br>
 http://localhost:8081/api/conferences<br><br>
+///////////////////////////////////////////////////////////////////<br>
 
 @Get<br>
 get all participants in conferences<br>
 http://localhost:8081/api/conferences/allUsers<br><br>
+///////////////////////////////////////////////////////////////////<br>
+
 
 @Get<br>
 get all lectures for user<br>
 http://localhost:8081/api/reserve/user/lectures<br><br>
+///////////////////////////////////////////////////////////////////<br>
+
 
 @Get<br>
 reports by conferences<br>
 http://localhost:8081/api/report/interest<br><br>
+///////////////////////////////////////////////////////////////////<br>
+
 
 @Get<br>
 reports by lectures<br>
 http://localhost:8081/api/report/conference<br><br>
+///////////////////////////////////////////////////////////////////<br>
+
 
 @Delete<br>
 cancel reservation<br>
 http://localhost:8081/api/reserve/cancel/{username}/reservation/{reservatinId}<br><br>
+///////////////////////////////////////////////////////////////////<br>
 
 @Post<br>
 reserve lecture by username and password<br>
@@ -54,6 +64,7 @@ example request body:<br>
     "username":"user",<br>
     "email":"user@gmail.com"<br>
 }<br><br>
+///////////////////////////////////////////////////////////////////<br>
 
 @Post<br>
 change email<br>
@@ -65,6 +76,7 @@ example request body<br>
     "email":"user1@gmail.com",<br>
     "newEmail":"user@wp.pl"<br>
 }<br>
+///////////////////////////////////////////////////////////////////<br>
 
 
 
