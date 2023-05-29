@@ -4,7 +4,6 @@ import com.nieradko.task.conferences.ConferenceEntity;
 import com.nieradko.task.conferences.ConferenceRepository;
 import com.nieradko.task.lectures.LectureEntity;
 import com.nieradko.task.lectures.LectureRepository;
-import com.nieradko.task.reservation.ReservationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
