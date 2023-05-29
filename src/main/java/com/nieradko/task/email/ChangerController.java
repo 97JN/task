@@ -14,7 +14,7 @@ public class ChangerController {
     private final ChangerService changerService;
 
     @PostMapping
-    public ResponseEntity<String> chcangeEmail(@RequestBody EmailRequest request){
+    public ResponseEntity<String> changeEmail(@RequestBody EmailRequest request){
         return changerService.changeEmail(request);
     }
 

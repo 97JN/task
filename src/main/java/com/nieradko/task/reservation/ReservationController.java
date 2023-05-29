@@ -1,6 +1,5 @@
 package com.nieradko.task.reservation;
 
-import com.nieradko.task.lectures.LectureDto;
 import com.nieradko.task.lectures.LectureEntity;
 import com.nieradko.task.lectures.LectureRepository;
 import lombok.AllArgsConstructor;
@@ -14,8 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/reserve")
 public class ReservationController {
-    private final LectureRepository lectureRepository;
-    private final ReservationRepository reservationRepository;
     private final ReservationService reservationService;
 
     @PostMapping("/{conferenceId}/set/{lectureId}")

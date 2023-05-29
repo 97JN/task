@@ -11,9 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -22,7 +24,6 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final LectureRepository lectureRepository;
     private final ConferenceRepository conferenceRepository;
-    private final ModelMapper modelMapper;
 
     @Transactional
     public ResponseEntity<String> reserveLecture(Long conferenceId, Long lectureId, ReservationRequest request) {
@@ -103,8 +104,7 @@ public class ReservationService {
                     reservationRepository.save(cancelReservation);
                 }
                 return new ResponseEntity<>("Reservation has been canceled", HttpStatus.OK);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>("User is not assigned to the specified reservation", HttpStatus.CONFLICT);
             }
         } else {

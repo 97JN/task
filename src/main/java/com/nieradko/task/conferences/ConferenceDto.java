@@ -2,15 +2,9 @@ package com.nieradko.task.conferences;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nieradko.task.lectures.LectureEntity;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.text.DateFormat;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Getter

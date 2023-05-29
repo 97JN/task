@@ -1,11 +1,11 @@
 package com.nieradko.task.reservation;
 
 import com.nieradko.task.conferences.ConferenceEntity;
+import com.nieradko.task.lectures.LectureEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<ReservationEntity, Long> {
@@ -17,5 +17,5 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
 
     List<ReservationEntity> findByUsername(String username);
 
-    ReservationEntity findByUsernameAndEmail(String username, String email);
+
 }

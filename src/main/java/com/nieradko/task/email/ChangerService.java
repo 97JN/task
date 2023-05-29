@@ -1,6 +1,5 @@
 package com.nieradko.task.email;
 
-import com.nieradko.task.reservation.ReservationDto;
 import com.nieradko.task.reservation.ReservationEntity;
 import com.nieradko.task.reservation.ReservationRepository;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor

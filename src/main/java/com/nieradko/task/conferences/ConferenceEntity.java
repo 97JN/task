@@ -1,16 +1,12 @@
 package com.nieradko.task.conferences;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nieradko.task.lectures.LectureEntity;
 import com.nieradko.task.reservation.ReservationEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-
-import java.text.DateFormat;
-import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.List;
 
 
