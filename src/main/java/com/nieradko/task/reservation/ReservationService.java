@@ -12,10 +12,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,11 +42,11 @@ public class ReservationService {
         boolean isUsernameTaken = reservationRepository.existsByUsername(request.getUsername());
         boolean isEmailTaken = reservationRepository.existsByEmail(request.getEmail());
 
-        if (conference == null) {
+        if (Objects.isNull(conference)) {
             return new ResponseEntity<>("There is no conference with given ID", HttpStatus.NOT_FOUND);
         }
 
-        if (lecture == null || !lecture.getConferences().equals(conference)) {
+        if (Objects.isNull(lecture) || !lecture.getConferences().equals(conference)) {
             return new ResponseEntity<>("There is no lecture with given ID", HttpStatus.NOT_FOUND);
         }
         if (lecture.getPersonEntriesLeft() <= 0) {
@@ -62,7 +69,7 @@ public class ReservationService {
         reservation.setLecture(lecture);
         reservation.setConference(conference);
         reservationRepository.save(reservation);
-
+        sendEmail(request);
         lecture.setPersonEntriesLeft(lecture.getPersonEntriesLeft() - 1);
 
         return new ResponseEntity<>("You have successfully signed up for this lecture", HttpStatus.OK);
@@ -82,7 +89,7 @@ public class ReservationService {
         return lectures;
     }
 
-    public ResponseEntity<String> canselUserReservation(String username, Long reservationId) {
+    public ResponseEntity<String> cancelUserReservation(String username, Long reservationId) {
 
         Optional<ReservationEntity> reservation = reservationRepository.findById(reservationId);
         Long lectureId = reservation.map(ReservationEntity::getLecture)
@@ -97,7 +104,7 @@ public class ReservationService {
             ReservationEntity reservations = reservation.get();
             if (reservations.getUsername() != null && reservations.getUsername().equals(username)) {
                 reservationRepository.delete(reservations);
-                if (lecture != null) {
+                if (!Objects.isNull(lecture)) {
                     lecture.setPersonEntriesLeft(lecture.getPersonEntriesLeft() + 1);
                     ReservationEntity cancelReservation = new ReservationEntity();
                     cancelReservation.setLecture(lecture);
@@ -109,6 +116,38 @@ public class ReservationService {
             }
         } else {
             return new ResponseEntity<>("There is no reservation with the given ID", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public void sendEmail(ReservationRequest request) {
+        String fileName = request.getEmail() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt";
+        String folderPath = System.getProperty("java.io.tmpdir");
+        File file = new File(folderPath, fileName);
+
+        String emailContent =
+                "To: " + request.getEmail() + "\n\n" +
+                        "Subject: Registration for lecture\n" +
+                        "Your reservation has been confirmed\n" +
+                        "Thanks for your participation!\n\n"+
+        "Send date: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(emailContent);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String resourcesDirectoryPath = "src/main/resources/powiadomienia";
+            File destinationDirectory = new File(resourcesDirectoryPath);
+            if (!destinationDirectory.exists()) {
+                destinationDirectory.mkdirs();
+            }
+            Path destinationFilePath = Path.of(resourcesDirectoryPath, fileName);
+            Path move = Files.move(file.toPath(), destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

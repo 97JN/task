@@ -9,13 +9,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReservationDto {
-
     private Long id;
+
     private String username;
+
     private String email;
+
     @JsonIgnore
     private LectureEntity lecture;
+
     @JsonIgnore
     private ConferenceEntity conference;
-
 }

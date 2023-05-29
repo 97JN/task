@@ -21,17 +21,19 @@ public class LectureEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String lectureName;
+
     private Integer personLimit;
+
     private Integer personEntriesLeft;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conference_id", nullable = false)
     @JsonIgnore
     private ConferenceEntity conferences;
+
     @OneToMany(mappedBy = "lecture")
     @JsonIgnore
     private List<ReservationEntity> reserveLecture;
-
-
-
 }

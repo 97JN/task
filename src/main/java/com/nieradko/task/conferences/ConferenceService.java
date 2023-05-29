@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -19,24 +20,18 @@ public class ConferenceService {
 
 
     public ResponseEntity<List<ConferenceDto>> getAllConferences() {
-        var conferenceList = conferenceRepository.findAll();
-        List<ConferenceDto> conferences = conferenceList.stream()
+        List<ConferenceDto> conferences = conferenceRepository.findAll()
+                .stream()
                 .map(conferenceEntity -> modelMapper.map(conferenceEntity, ConferenceDto.class))
-                .toList();
+                .collect(Collectors.toList());
         return new ResponseEntity<>(conferences, HttpStatus.OK);
     }
 
     public ResponseEntity<List<ReservationDto>> getAllRegisteredUsers() {
-        var reservations = reservationRepository.findAll();
-
-        List<ReservationDto> reservationDtos = reservations.stream()
-                .map(reservation -> {
-                    ReservationDto reservationDto = new ReservationDto();
-                    reservationDto.setId(reservation.getId());
-                    reservationDto.setUsername(reservation.getUsername());
-                    reservationDto.setEmail(reservation.getEmail());
-                    return reservationDto;
-                }).toList();
+        List<ReservationDto> reservationDtos = reservationRepository.findAll()
+                .stream()
+                .map(reservation -> modelMapper.map(reservation, ReservationDto.class))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(reservationDtos, HttpStatus.OK);
     }
 }

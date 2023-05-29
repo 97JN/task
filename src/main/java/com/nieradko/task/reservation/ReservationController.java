@@ -30,8 +30,10 @@ public class ReservationController {
     }
 
     @DeleteMapping("/cancel/{username}/reservation/{reservationId}")
-    public ResponseEntity<String> canselUserReservation(@PathVariable String username, @PathVariable Long reservationId){
-        return reservationService.canselUserReservation(username,reservationId);
+    public ResponseEntity<String> cancelUserReservation(
+            @PathVariable String username,
+            @PathVariable Long reservationId){
+        return reservationService.cancelUserReservation(username,reservationId);
     }
 
 

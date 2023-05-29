@@ -11,10 +11,14 @@ import java.util.List;
 @Setter
 public class ConferenceDto {
     private Long id;
+
     private String conferenceName;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private String startDate;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private String endDate;
+
     private List<LectureEntity> allLectures;
 }

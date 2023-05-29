@@ -9,6 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EmailRequest {
     private String username;
+
     private String email;
+
     private String newEmail;
 }

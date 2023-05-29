@@ -10,9 +10,13 @@ import lombok.Setter;
 @Setter
 public class LectureDto {
     private Long id;
+
     private String lectureName;
+
     private Integer personLimit;
+
     private Integer personEntriesLeft;
+
     @JsonIgnore
     private ConferenceEntity conferences;
 }
